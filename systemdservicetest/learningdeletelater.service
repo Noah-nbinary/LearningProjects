@@ -1,0 +1,11 @@
+[Unit]
+Description=This is a test in order to learn how systemd services work
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /home/noah/scriptforsystemd.sh
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=default.target
