@@ -1,0 +1,24 @@
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY docker-entrypoint.sh .
+
+ENV EULA=false \
+    SEED=-7649949940957896961
+
+RUN	apk update && \
+	apk add libudev-zero && \
+	apk add openjdk21-jre-headless && \
+	rm -rf /var/cache/apk/* && \
+	chmod +x docker-entrypoint.sh && \
+	wget https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar && \
+	java -Xms1G -Xmx2G -jar server.jar nogui 
+
+EXPOSE 25565
+
+VOLUME /app
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
+
+CMD [""]
