@@ -1,24 +1,27 @@
 FROM alpine:latest
 
+RUN mkdir /dockerfiles
+
 WORKDIR /app
 
-COPY docker-entrypoint.sh .
+COPY . /dockerfiles
 
 ENV EULA=false \
-    SEED=-7649949940957896961
+    SEED=-7649949940957896961 \
+    RCONPASS=
 
-RUN	apk update && \
-	apk add libudev-zero && \
-	apk add openjdk21-jre-headless && \
-	rm -rf /var/cache/apk/* && \
-	chmod +x docker-entrypoint.sh && \
-	wget https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar && \
-	java -Xms1G -Xmx2G -jar server.jar nogui 
+RUN     apk update && \
+        apk add libudev-zero && \
+        apk add openjdk21-jre-headless && \
+        rm -rf /var/cache/apk/* && \
+        chmod +x /dockerfiles/docker-entrypoint.sh && \
+        wget -O /bin/rcon-cli https://github.com/itzg/rcon-cli/releases/download/1.7.0/rcon-cli_1.7.0_linux_amd64.tar.gz && \
+        tar -xzf /bin/rcon-cli -C /bin rcon-cli
 
-EXPOSE 25565
+EXPOSE 25565 25575
 
 VOLUME /app
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["sh" , "/dockerfiles/docker-entrypoint.sh"]
 
 CMD [""]
