@@ -8,7 +8,7 @@ COPY . /dockerfiles
 
 ENV EULA=false \
     SEED=-7649949940957896961 \
-    RCONPASS=
+    RCONPASS=mypass
 
 RUN     apk update && \
         apk add libudev-zero && \

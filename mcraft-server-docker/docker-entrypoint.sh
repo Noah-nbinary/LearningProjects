@@ -1,13 +1,13 @@
 #!/bin/sh 
 
 #Accepts EULA if var EULA has been modified in docker run (docker run -e EULA=true)
-sed -i 's#eula=false#eula='"$EULA"'#g' /dockerfiles/eula.txt
+sed -i 's#^eula=.*#eula='"$EULA"'#g' /dockerfiles/eula.txt
 
 #Changes level seed if var SEED has been modified in docker run (docker run -e SEED=x)
-sed -i 's#level-seed=#level-seed='"$SEED"'#g' /dockerfiles/server.properties 
+sed -i 's#^level-seed=.*#level-seed='"$SEED"'#g' /dockerfiles/server.properties 
 
 #Changes RCON password if var RCONPASS has been modified in docker run (docker run -e RCONPASS=x) 
-sed -i 's#rcon.password=#rcon.password='"$RCONPASS"'#g' /dockerfiles/server.properties 
+sed -i 's#^rcon\.password=.*#rcon.password='"$RCONPASS"'#g' /dockerfiles/server.properties 
 
 #Copies eula.txt and server.properties to WORKDIR (for it to work with volumes and shared folders, swarm...)
 cp /dockerfiles/eula.txt /app && cp /dockerfiles/server.properties /app
@@ -18,4 +18,4 @@ if [ ! -f "/app/server.jar" ]; then
 fi
 
 #Starts server
-java -Xms1G -Xmx2G -jar /app/server.jar nogui 
+java -Xms1G -Xmx2G -jar /app/server.jar nogui
