@@ -35,12 +35,19 @@ def juego_palito_multiplayer():
         g2g = False
         while g2g != True:
             print(f'\nChoose a stick from 1 to {sticks_ammount}: \n \t {" ".join(sticks)}\n\n\t   ')
-            intento = int(input())
+            
+            try:
+                intento = int(input())
+
+            except ValueError:
+                os.system('clear')
+                print("Invalid input! Please enter a whole number.")
+                continue        
 
             # The input is checked to see if its between 1 and sticks_ammount
-            if intento not in list((range(1,sticks_ammount+1))):
+            if intento < 1 or intento > sticks_ammount:
                 os.system('clear')
-                print('Invalid stick!')
+                print(f'Invalid stick! Select a number from 1 to {sticks_ammount}')
             # If it is, then checks if the stick was already picked before
             elif sticks[intento - 1] == 'X':
                 os.system('clear')
